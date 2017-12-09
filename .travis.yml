@@ -7,8 +7,14 @@ matrix:
     - os: linux
       python: 3.6
       language: python
+    - os: osx
+      language: generic
 
 install:
+  - |
+    if [[ "$(uname -s)" == 'Darwin' ]]; then
+        brew install python3
+    fi
   - python3 -m pip install --upgrade pip
   - python3 -m pip install pyqt5 pytest pyinstaller
 
@@ -18,12 +24,17 @@ script:
       --exclude-module tkinter
       --add-data kalkulacka:kalkulacka
       -F -w
+  - |
+    if [[ "$(uname -s)" == 'Darwin' ]]; then
+        zip -r dist/kalkulacka-app.app.zip dist/kalkulacka-app.app
+        rm -rvf dist/kalkulacka-app.app
+    fi
+  - for f in $(ls dist); do mv dist/$f dist/$(uname -s)-$f; done
 
 deploy:
     provider: releases
     api_key:
         secure: Wk3MytO+eiyATsw9gvvty7MGwRmjYjZntownFoCLK5rOADOYO/aEfzwjE9R74GoAcz/GxBmv4pkPSbPXdAaVeEJPDs6ITPjg/8ePEAA4/FoiO5SUsswgymHwJzHk0LhYuh7V6FW0oAL0rFQ0f5dwBNLhPzjfXi0ZWEaa6224aekUxUEx+pHuNsAg8Ylp3iI3J6U5lallrGm8TYRQBjNQv4ZgjhnhzN5fMuIrAHO8yQt18aGL3b11FCPba6vbzZS9EgPdwFYl+nDaGGqSnZK+1cJzo0cEscAzy8RLLAlwZH6bQYENZa3ioqcSHjPUW609k5wCddp90ggBhY+xeuQ5CUQqllk9xSKyVBH3n7Py7+/nX2S/xvMxMnOoueCxlaLltILoLmFKdNHxebyzvanl6/kkSlDcwiqKb/WBAbfANR77v4zy9IkQ0Fy8uDD5W8EeugsuBHAswyR2HwKoHLcwhWhYdtfGlS4zVv9qpikXXjHbsh8ojNRBP1/o8MnfJ5/rpqVQllbAh9738YNTRkdZrGEv99U9jcjIfdlA4rMJStljEjM5KzeC8JMgO4cnPaFPVwBPuwzQOir06znEltfBPTDnvx+b9GNlebwYP1IOgTD4EwvgfHRXwPBOa9ekQDPnZjuA2JRS9gaBoJxurXEbmpkcQPigUi6N3cTmssh6pWI=
-
     file_glob: true
     file: dist/*
     skip_cleanup: true
