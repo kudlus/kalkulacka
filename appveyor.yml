@@ -13,7 +13,7 @@ cache:
 
 install:
 - "%PYTHON%\\python.exe -m pip install -U pip"
-- "%PYTHON%\\python.exe -m pip install pyglet pytest pyinstaller"
+- "%PYTHON%\\python.exe -m pip install pyglet pyqt5 pytest pyinstaller"
 
 build: off
 

@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, uic
-import pkg_resources
+import pkg_resources #pro nacteni ovladacich prvku i z jineho ardrsare, nez je na pevno
 
 def main():
     # vytvoreni aplikace a okna
